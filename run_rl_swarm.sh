@@ -154,13 +154,13 @@ if [ "$CONNECT_TO_TESTNET" = true ]; then
 
     # Try to open the URL in the default browser
     if [ -z "$DOCKER" ]; then
-        if open http://localhost:3000 2> /dev/null; then
-            echo_green ">> Successfully opened http://localhost:3000 in your default browser."
+        if open http://localhost:3001 2> /dev/null; then
+            echo_green ">> Successfully opened http://localhost:3001 in your default browser."
         else
-            echo ">> Failed to open http://localhost:3000. Please open it manually."
+            echo ">> Failed to open http://localhost:3001. Please open it manually."
         fi
     else
-        echo_green ">> Please open http://localhost:3000 in your host browser."
+        echo_green ">> Please open http://localhost:3001 in your host browser."
     fi
 
     cd ..
@@ -246,22 +246,31 @@ fi
 
 echo_green ">> Done!"
 
+HF_TOKEN=${HF_TOKEN:-""}
+# if [ -n "${HF_TOKEN}" ]; then # Check if HF_TOKEN is already set and use if so. Else give user a prompt to choose.
+#     HUGGINGFACE_ACCESS_TOKEN=${HF_TOKEN}
+# else
+#     echo -en $GREEN_TEXT
+#     read -p ">> Would you like to push models you train in the RL swarm to the Hugging Face Hub? [y/N] " yn
+#     echo -en $RESET_TEXT
+#     yn=${yn:-N} # Default to "N" if the user presses Enter
+#     case $yn in
+#         [Yy]*) read -p "Enter your Hugging Face access token: " HUGGINGFACE_ACCESS_TOKEN ;;
+#         [Nn]*) HUGGINGFACE_ACCESS_TOKEN="None" ;;
+#         *) echo ">>> No answer was given, so NO models will be pushed to Hugging Face Hub" && HUGGINGFACE_ACCESS_TOKEN="None" ;;
+#     esac
+# fi
 
-echo -en $GREEN_TEXT
-read -p ">> Would you like to push models you train in the RL swarm to the Hugging Face Hub? [y/N] " yn
-echo -en $RESET_TEXT
-yn=${yn:-N} # Default to "N" if the user presses Enter
-case $yn in
-    [Yy]*) read -p "Enter your Hugging Face access token: " HUGGINGFACE_ACCESS_TOKEN ;;
-    [Nn]*) HUGGINGFACE_ACCESS_TOKEN="None" ;;
-    *) echo ">>> No answer was given, so NO models will be pushed to Hugging Face Hub" && HUGGINGFACE_ACCESS_TOKEN="None" ;;
-esac
+# echo -en $GREEN_TEXT
+# read -p ">> Enter the name of the model you want to use in huggingface repo/name format, or press [Enter] to use the default model. " MODEL_NAME
+# echo -en $RESET_TEXT
 
-
-echo -en $GREEN_TEXT
-read -p ">> Enter the name of the model you want to use in huggingface repo/name format, or press [Enter] to use the default model. " MODEL_NAME
-echo -en $RESET_TEXT
-
+PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
+MODEL_NAME=""
+# MODEL_NAME="Qwen/Qwen3-0.6B"
+# MODEL_NAME="nvidia/AceInstruct-1.5B"
+# MODEL_NAME="dnotitia/Smoothie-Qwen3-1.7B"
+# MODEL_NAME="Gensyn/Qwen2.5-1.5B-Instruct"
 # Only export MODEL_NAME if user provided a non-empty value
 if [ -n "$MODEL_NAME" ]; then
     export MODEL_NAME
@@ -281,8 +290,9 @@ echo -en $RESET_TEXT
 echo_green ">> Good luck in the swarm!"
 echo_blue ">> And remember to star the repo on GitHub! --> https://github.com/gensyn-ai/rl-swarm"
 
-python -m code_gen_exp.runner.swarm_launcher \
+while true; do
+    python -m code_gen_exp.runner.swarm_launcher \
     --config-path "$ROOT/code_gen_exp/config" \
     --config-name "code-gen-swarm.yaml" 
-
-wait  # Keep script running until Ctrl+C
+    sleep 5
+done
