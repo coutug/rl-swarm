@@ -54,6 +54,7 @@ services:
   # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
   swarm-gpu:
     profiles: ["swarm"]
+    restart: always
     build:
       context: .
       dockerfile: containerfiles/swarm-node/swarm.containerfile

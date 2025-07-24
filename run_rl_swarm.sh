@@ -65,7 +65,8 @@ cleanup() {
     echo_green ">> Shutting down trainer..."
 
     # Remove modal credentials if they exist
-    rm -r $ROOT_DIR/modal-login/temp-data/*.json 2> /dev/null || true
+    echo_green ">> keeping user temp-data..."
+    # rm -r $ROOT_DIR/modal-login/temp-data/*.json 2> /dev/null || true
 
     # Kill all processes belonging to this script's process group
     kill -- -$$ || true
@@ -265,9 +266,10 @@ HF_TOKEN=${HF_TOKEN:-""}
 # read -p ">> Enter the name of the model you want to use in huggingface repo/name format, or press [Enter] to use the default model. " MODEL_NAME
 # echo -en $RESET_TEXT
 
-PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
+export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
+
 MODEL_NAME=""
-# MODEL_NAME="Qwen/Qwen3-0.6B"
+MODEL_NAME="Qwen/Qwen3-0.6B"
 # MODEL_NAME="nvidia/AceInstruct-1.5B"
 # MODEL_NAME="dnotitia/Smoothie-Qwen3-1.7B"
 # MODEL_NAME="Gensyn/Qwen2.5-1.5B-Instruct"
