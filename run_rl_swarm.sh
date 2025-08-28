@@ -248,23 +248,6 @@ fi
 echo_green ">> Done!"
 
 HF_TOKEN=${HF_TOKEN:-""}
-# if [ -n "${HF_TOKEN}" ]; then # Check if HF_TOKEN is already set and use if so. Else give user a prompt to choose.
-#     HUGGINGFACE_ACCESS_TOKEN=${HF_TOKEN}
-# else
-#     echo -en $GREEN_TEXT
-#     read -p ">> Would you like to push models you train in the RL swarm to the Hugging Face Hub? [y/N] " yn
-#     echo -en $RESET_TEXT
-#     yn=${yn:-N} # Default to "N" if the user presses Enter
-#     case $yn in
-#         [Yy]*) read -p "Enter your Hugging Face access token: " HUGGINGFACE_ACCESS_TOKEN ;;
-#         [Nn]*) HUGGINGFACE_ACCESS_TOKEN="None" ;;
-#         *) echo ">>> No answer was given, so NO models will be pushed to Hugging Face Hub" && HUGGINGFACE_ACCESS_TOKEN="None" ;;
-#     esac
-# fi
-
-# echo -en $GREEN_TEXT
-# read -p ">> Enter the name of the model you want to use in huggingface repo/name format, or press [Enter] to use the default model. " MODEL_NAME
-# echo -en $RESET_TEXT
 
 export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
 
@@ -273,7 +256,7 @@ MODEL_NAME="Qwen/Qwen3-0.6B"
 # MODEL_NAME="nvidia/AceInstruct-1.5B"
 # MODEL_NAME="dnotitia/Smoothie-Qwen3-1.7B"
 # MODEL_NAME="Gensyn/Qwen2.5-1.5B-Instruct"
-# Only export MODEL_NAME if user provided a non-empty value
+
 if [ -n "$MODEL_NAME" ]; then
     export MODEL_NAME
     echo_green ">> Using model: $MODEL_NAME"
