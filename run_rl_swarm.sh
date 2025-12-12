@@ -252,10 +252,12 @@ HF_TOKEN=${HF_TOKEN:-""}
 export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
 
 MODEL_NAME=""
-MODEL_NAME="Qwen/Qwen3-0.6B"
-# MODEL_NAME="nvidia/AceInstruct-1.5B"
-# MODEL_NAME="dnotitia/Smoothie-Qwen3-1.7B"
-# MODEL_NAME="Gensyn/Qwen2.5-1.5B-Instruct"
+# MODEL_NAME="Qwen/Qwen3-0.6B"                          # deprecated
+# MODEL_NAME="deepseek-ai/deepseek-coder-1.3b-instruct" # large
+# MODEL_NAME="Qwen/Qwen2.5-Coder-1.5B-Instruct"         # large
+MODEL_NAME="Qwen/Qwen2.5-Coder-0.5B-Instruct"           # small
+
+
 
 if [ -n "$MODEL_NAME" ]; then
     export MODEL_NAME
